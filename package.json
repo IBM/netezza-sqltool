@@ -3,13 +3,13 @@
   "displayName": "SQLTools - Database tools",
   "description": "Database management done right. Connection explorer, query runner, intellisense, bookmarks, query history. Feel like a database hero!",
   "version": "1.0.0",
-  "publisher": "mtxr",
-  "author": "Matheus Teixeira <me@mteixeira.dev>",
+  "publisher": "Abhishek Jog",
+  "author": "Abhishek jog",
   "license": "MIT",
   "main": "./dist/extension.js",
-  "homepage": "https://vscode-sqltools.mteixeira.dev/",
+  "homepage": "https://github.com/IBM/netezza-sqltool",
   "repository": {
-    "url": "https://github.com/mtxr/vscode-sqltools.git",
+    "url": "https://github.com/IBM/netezza-sqltool",
     "type": "git"
   },
   "engines": {
@@ -39,10 +39,6 @@
     "prepack:all": "rimraf -rf *.vsix dist",
     "pack:all": "cross-env DISPLAY_NAME=SQLTools NODE_ENV=production concurrently --kill-others-on-fail \"npm:build:pack\" \"npm:driver:pack\"",
     "driver:pack": "concurrently --kill-others-on-fail \"npm:driver:pack:*\"",
-    "driver:pack:pg": "(cd packages/driver.pg/ && yarn run package && mv *.vsix '../../.')",
-    "driver:pack:mysql": "(cd packages/driver.mysql/ && yarn run package && mv *.vsix '../../.')",
-    "driver:pack:mssql": "(cd packages/driver.mssql/ && yarn run package && mv *.vsix '../../.')",
-    "driver:pack:sqlite": "(cd packages/driver.sqlite/ && yarn run package && mv *.vsix '../../.')",
     "driver:pack:netezza": "(cd packages/driver.netezza/ && yarn run package && mv *.vsix '../../.')"
   },
   "devDependencies": {
