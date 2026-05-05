@@ -1,8 +1,8 @@
 {
-  "name": "sqltools-driver-netezza",
+  "name": "netezza-sqltools",
   "displayName": "SQLTools IBM Netezza Driver",
   "description": "SQLTools driver for IBM Netezza databases",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "engines": {
     "vscode": "^1.78.0"
   },
