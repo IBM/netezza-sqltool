@@ -1143,10 +1143,10 @@ https-proxy-agent@^7.0.0:
     agent-base "^7.1.2"
     debug "4"
 
-ibm-netezza@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/ibm-netezza/-/ibm-netezza-1.0.3.tgz#541346561d251b51f81467fa45738a7d9b191442"
-  integrity sha512-mMZ961dMy2g6erBtjzu2+PCupQz2FNgxrs5FFsnAJskDdQoYiZR9K72GVXQvYX4BCK2S32k0UCYafnxhMPVdXw==
+ibm-netezza@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/ibm-netezza/-/ibm-netezza-1.0.6.tgz#c769bdfaa16c64d4d58808ab5cb6b4d3a71cb3bc"
+  integrity sha512-cUdEUg4pzDT5eMd14xM2ODOsgax6EygIPXM8IpkqZbikcCVdLySsUvCzhd9fodXrmrcdTypScA/zkr45ed5xqw==
 
 iconv-lite@0.6.3, iconv-lite@^0.6.3:
   version "0.6.3"
