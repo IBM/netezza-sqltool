@@ -1,7 +1,7 @@
 {
   "name": "netezza-sqltools",
   "displayName": "IBM Netezza Developer Extension",
-  "description": "SQLTools driver for IBM Netezza databases",
+  "description": "IBM Netezza Developer Extension",
   "version": "0.5.0",
   "engines": {
     "vscode": "^1.78.0"
