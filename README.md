@@ -1,5 +1,5 @@
 
-# SQLTools IBM Netezza Driver
+# IBM Netezza Developer Extension
 
 A Visual Studio Code extension that adds IBM Netezza database support to [SQLTools](https://marketplace.visualstudio.com/items?itemName=mtxr.sqltools).
 
