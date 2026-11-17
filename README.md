@@ -52,3 +52,4 @@ This driver is built on top of the [ibm-netezza](https://github.com/IBM/nz-node)
 ## License
 
 MIT License - see [LICENSE](LICENSE) file for details
+Publisher ownership verification requested on November 17, 2026.
