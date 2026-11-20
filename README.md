@@ -37,6 +37,10 @@ A Visual Studio Code extension that adds IBM Netezza database support to [SQLToo
 
 ## Release Notes
 
+### 0.9.0
+
+- Support for listing and querying datalake / Iceberg tables
+
 ### 0.1.0
 
 - Initial release of IBM Netezza driver

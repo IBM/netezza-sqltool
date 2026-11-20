@@ -1,9 +1,8 @@
 import { NSDatabase } from '@sqltools/types';
 
+// Always quote: Netezza folds unquoted names to upper case, so lowercase names (e.g. datalake tables) would not be found.
 export const pgCheckEscape = (w: string | { label: string }) =>
-  /[^a-z0-9_]/.test((<any>w).label || w)
-    ? `"${(<any>w).label || w}"`
-    : (<any>w).label || w;
+  `"${String((<any>w).label || w).replace(/"/g, '""')}"`;
 
 
 function escapeTableName(table: Partial<NSDatabase.ITable> | string) {
