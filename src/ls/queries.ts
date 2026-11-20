@@ -72,7 +72,7 @@ WHERE
 ORDER BY f.FUNCTION
 ;`;
 
-const fetchTablesAndViews = (type: ContextValue, tableType = 'TABLE'): IBaseQueries['fetchTables'] => queryFactory`
+const fetchTablesAndViews = (type: ContextValue): IBaseQueries['fetchTables'] => queryFactory`
 SELECT
   t.TABLENAME AS "label",
   '${type}' as "type",
@@ -83,7 +83,7 @@ FROM _v_table t
 WHERE
   t.SCHEMA = '${p => p.schema}'
   AND t.DATABASE = '${p => p.database}'
-  AND t.OBJTYPE = '${tableType}'
+  AND t.OBJTYPE IN ('TABLE', 'DATALAKE TABLE')
 ORDER BY
   t.TABLENAME;
 `;
@@ -91,11 +91,11 @@ ORDER BY
 const searchTables: IBaseQueries['searchTables'] = queryFactory`
 SELECT
   t.TABLENAME AS "label",
-  (CASE WHEN t.OBJTYPE = 'TABLE' THEN '${ContextValue.TABLE}' ELSE '${ContextValue.VIEW}' END) as "type",
+  (CASE WHEN t.OBJTYPE IN ('TABLE', 'DATALAKE TABLE') THEN '${ContextValue.TABLE}' ELSE '${ContextValue.VIEW}' END) as "type",
   t.SCHEMA AS "schema",
   t.DATABASE AS "database",
-  (CASE WHEN t.OBJTYPE = 'TABLE' THEN FALSE ELSE TRUE END) AS "isView",
-  (CASE WHEN t.OBJTYPE = 'TABLE' THEN 'table' ELSE 'view' END) AS "description",
+  (CASE WHEN t.OBJTYPE IN ('TABLE', 'DATALAKE TABLE') THEN FALSE ELSE TRUE END) AS "isView",
+  (CASE WHEN t.OBJTYPE IN ('TABLE', 'DATALAKE TABLE') THEN 'table' ELSE 'view' END) AS "description",
   ('"' || t.SCHEMA || '"."' || t.TABLENAME || '"') as "detail"
 FROM _v_table t
 WHERE
@@ -147,7 +147,7 @@ ORDER BY
 LIMIT ${p => p.limit || 100}
 `;
 
-const fetchTables: IBaseQueries['fetchTables'] = fetchTablesAndViews(ContextValue.TABLE, 'TABLE');
+const fetchTables: IBaseQueries['fetchTables'] = fetchTablesAndViews(ContextValue.TABLE);
 const fetchViews: IBaseQueries['fetchTables'] = queryFactory`
 SELECT
   v.VIEWNAME AS "label",

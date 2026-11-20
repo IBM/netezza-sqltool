@@ -3,6 +3,7 @@ import Queries from './queries';
 import { IConnectionDriver, NSDatabase, Arg0, ContextValue, MConnectionExplorer } from '@sqltools/types';
 import AbstractDriver from '@sqltools/base-driver';
 import { parse as queryParse } from '../utils/query';
+import escapeTableName from '../escape-table';
 import generateId from '../utils/internal-id';
 
 interface NetezzaPoolConfig {
@@ -140,8 +141,46 @@ export default class Netezza extends AbstractDriver<Pool, NetezzaPoolConfig> imp
       });
   }
 
+  public async describeTable(metadata: NSDatabase.ITable, opt: any = {}) {
+    const res = await this.query(this.queries.describeTable(metadata), opt);
+    if (res[0] && (!res[0].results || res[0].results.length === 0)) {
+      return this.query(`describe ${escapeTableName(metadata)}`, opt);
+    }
+    return res;
+  }
+
   private async getColumns(parent: NSDatabase.ITable): Promise<NSDatabase.IColumn[]> {
-    const results = await this.queryResults(this.queries.fetchColumns(parent));
+    let results = await this.queryResults(this.queries.fetchColumns(parent));
+    if (!results.length) {
+      // Datalake (Iceberg) tables are not listed in _v_relation_column; fetch column metadata using describe.
+      try {
+        const describeRows = await this.queryResults(`describe ${escapeTableName(parent)}`);
+        results = (describeRows || []).map((row: any) => {
+          const colName = row.ATTRIBUTE ?? row.attribute ?? row.Attribute ?? Object.values(row)[0] ?? '';
+          const colType = (row.TYPE ?? row.type ?? row.Type ?? Object.values(row)[1] ?? '').toString().trim();
+          const modifier = (row.MODIFIER ?? row.modifier ?? row.Modifier ?? Object.values(row)[2] ?? '').toString().toUpperCase();
+          const sizeMatch = colType.match(/\((\d+)(?:,\s*\d+)?\)/);
+          const size = sizeMatch ? parseInt(sizeMatch[1], 10) : null;
+          const dataType = colType.replace(/\(.*?\)/, '').trim();
+          return {
+            label: String(colName),
+            type: ContextValue.COLUMN,
+            table: parent.label,
+            dataType: dataType || colType,
+            detail: colType,
+            size,
+            database: parent.database,
+            schema: parent.schema,
+            defaultValue: null,
+            isNullable: modifier.includes('NOT NULL') ? 'NO' : 'YES',
+            isPk: false,
+            isFk: false,
+          };
+        }) as any[];
+      } catch (e) {
+        results = [];
+      }
+    }
     return results.map(col => ({
       ...col,
       iconName: col.isPk ? 'pk' : (col.isFk ? 'fk' : null),
