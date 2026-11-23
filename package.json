@@ -72,5 +72,8 @@
     "esbuild": "^0.25.0",
     "rimraf": "^5.0.0",
     "typescript": "^5.0.0"
+  },
+  "resolutions": {
+    "minimatch": "^11.0.1"
   }
 }
